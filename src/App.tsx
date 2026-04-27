@@ -62,24 +62,24 @@ const PremiumCard = ({ children, className = "" }: { children: React.ReactNode, 
   </div>
 );
 
-const PremiumCharacterReveal = ({ text, className, delayOffset = 0 }: { text: string, className?: string, delayOffset?: number }) => {
-  const characters = text.split("");
+const StaggeredWordReveal = ({ text, className, delayOffset = 0 }: { text: string, className?: string, delayOffset?: number }) => {
+  const words = text.split(" ");
   
   return (
     <span className={className}>
-      {characters.map((char, i) => (
+      {words.map((word, i) => (
         <motion.span
           key={i}
-          initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+          initial={{ opacity: 0, filter: "blur(10px)", y: 40 }}
           animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
           transition={{
-            duration: 0.4,
-            delay: delayOffset + i * 0.04,
-            ease: "easeOut"
+            duration: 0.8,
+            delay: delayOffset + i * 0.1,
+            ease: [0.2, 0.65, 0.3, 0.9]
           }}
-          className="inline-block whitespace-pre"
+          className="inline-block mr-[0.25em] last:mr-0"
         >
-          {char}
+          {word}
         </motion.span>
       ))}
     </span>
@@ -390,15 +390,15 @@ export default function App() {
               
               <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-[100px] font-black leading-[0.95] md:leading-[0.9] tracking-tighter uppercase flex flex-col items-center gap-2 md:gap-4 font-display">
                 <div className="flex flex-col items-center">
-                  <PremiumCharacterReveal 
+                  <StaggeredWordReveal 
                     text="Joshy’s ECM" 
                     className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
                     delayOffset={0.5}
                   />
-                  <PremiumCharacterReveal 
+                  <StaggeredWordReveal 
                     text="Diagnostic Service" 
                     className="text-neutral-500 font-medium"
-                    delayOffset={1.2}
+                    delayOffset={0.8}
                   />
                 </div>
               </h1>
