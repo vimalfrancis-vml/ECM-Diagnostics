@@ -62,11 +62,36 @@ const PremiumCard = ({ children, className = "" }: { children: React.ReactNode, 
   </div>
 );
 
+const PremiumCharacterReveal = ({ text, className, delayOffset = 0 }: { text: string, className?: string, delayOffset?: number }) => {
+  const characters = text.split("");
+  
+  return (
+    <span className={className}>
+      {characters.map((char, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+          animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          transition={{
+            duration: 0.4,
+            delay: delayOffset + i * 0.04,
+            ease: "easeOut"
+          }}
+          className="inline-block whitespace-pre"
+        >
+          {char}
+        </motion.span>
+      ))}
+    </span>
+  );
+};
+
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isAllServicesOpen, setIsAllServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [bookingForm, setBookingForm] = useState({ name: '', phone: '', time: '' });
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   const handleWhatsAppBooking = (e: React.FormEvent) => {
     e.preventDefault();
@@ -303,19 +328,21 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <div className="fixed inset-0 z-0 overflow-hidden smooth-render">
-        <video 
+      <div className="fixed inset-0 z-0 overflow-hidden smooth-render bg-black">
+        <motion.video 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: videoLoaded ? 0.6 : 0 }}
+          transition={{ duration: 2, ease: "easeInOut" }}
           autoPlay 
           loop 
           muted 
           playsInline 
-          poster="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1920"
-          className="absolute inset-0 w-full h-full object-cover opacity-60 scale-[1.1] md:scale-105 md:object-center object-[25%_center] pointer-events-none"
+          onCanPlayThrough={() => setVideoLoaded(true)}
+          className="absolute inset-0 w-full h-full object-cover scale-[1.1] md:scale-105 md:object-center object-[25%_center] pointer-events-none"
         >
           <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260306_074215_04640ca7-042c-45d6-bb56-58b1e8a42489.mp4" type="video/mp4" />
-        </video>
-        {/* Dynamic Gradient - Less aggressive on mobile to show video detail */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black md:via-black/40 md:from-black/80" />
+        </motion.video>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/40 to-black md:via-black/50 md:from-black/90" />
         <div className="absolute inset-0 bg-grid opacity-10 md:opacity-20 pointer-events-none" />
       </div>
 
@@ -362,39 +389,17 @@ export default function App() {
               </motion.div>
               
               <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-[100px] font-black leading-[0.95] md:leading-[0.9] tracking-tighter uppercase flex flex-col items-center gap-2 md:gap-4 font-display">
-                <div className="flex flex-wrap justify-center gap-x-[0.2em]">
-                  {["Joshy’s", "ECM"].map((word, i) => (
-                    <motion.span
-                      key={i}
-                      initial={{ opacity: 0, y: 40, rotateX: -45 }}
-                      animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                      transition={{ 
-                        duration: 1.2, 
-                        delay: i * 0.1,
-                        ease: [0.16, 1, 0.3, 1]
-                      }}
-                      className="text-white inline-block hover:scale-[1.02] transition-transform duration-500 cursor-default"
-                    >
-                      {word}
-                    </motion.span>
-                  ))}
-                </div>
-                <div className="flex flex-wrap justify-center gap-x-[0.2em]">
-                  {["Diagnostic", "Service"].map((word, i) => (
-                    <motion.span
-                      key={i}
-                      initial={{ opacity: 0, y: 40, rotateX: -45 }}
-                      animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                      transition={{ 
-                        duration: 1.2, 
-                        delay: (i + 2) * 0.1,
-                        ease: [0.16, 1, 0.3, 1]
-                      }}
-                      className="text-neutral-500 font-medium inline-block hover:text-neutral-300 transition-colors duration-500"
-                    >
-                      {word}
-                    </motion.span>
-                  ))}
+                <div className="flex flex-col items-center">
+                  <PremiumCharacterReveal 
+                    text="Joshy’s ECM" 
+                    className="text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                    delayOffset={0.5}
+                  />
+                  <PremiumCharacterReveal 
+                    text="Diagnostic Service" 
+                    className="text-neutral-500 font-medium"
+                    delayOffset={1.2}
+                  />
                 </div>
               </h1>
             </div>
