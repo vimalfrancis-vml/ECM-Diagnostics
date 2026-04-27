@@ -4,7 +4,6 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/ECM-Diagnostics/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -12,6 +11,8 @@ export default defineConfig({
     },
   },
   server: {
-    hmr: process.env.DISABLE_HMR !== 'true',
+    hmr: {
+      overlay: false, // ഇതിലൂടെ എറർ ഓവർലേ ഒഴിവാക്കാം
+    },
   },
 });
