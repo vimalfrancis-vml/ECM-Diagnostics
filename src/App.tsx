@@ -86,6 +86,27 @@ const StaggeredWordReveal = ({ text, className, delayOffset = 0 }: { text: strin
   );
 };
 
+const HamburgerButton = ({ isOpen, onClick }: { isOpen: boolean, onClick: () => void }) => (
+  <button 
+    onClick={onClick}
+    className="lg:hidden flex flex-col gap-1.5 p-2 -ml-2 group z-50 relative"
+    aria-label={isOpen ? "Close menu" : "Open menu"}
+  >
+    <motion.div 
+      animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+      className="w-6 h-0.5 bg-neutral-400 group-hover:bg-white transition-colors"
+    />
+    <motion.div 
+      animate={isOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
+      className="w-4 h-0.5 bg-neutral-500 group-hover:bg-white transition-colors"
+    />
+    <motion.div 
+      animate={isOpen ? { rotate: -45, y: -8, width: 24 } : { rotate: 0, y: 0, width: 16 }}
+      className="h-0.5 bg-neutral-400 group-hover:bg-white transition-colors"
+    />
+  </button>
+);
+
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isAllServicesOpen, setIsAllServicesOpen] = useState(false);
@@ -195,63 +216,97 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
-<AnimatePresence>
+      <AnimatePresence>
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-[100] lg:hidden">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="absolute inset-0 bg-black/95 backdrop-blur-2xl"
-            />
-            <motion.div 
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 h-screen w-[80%] max-w-sm bg-neutral-900 border-l border-white/10 p-8 flex flex-col pt-24"
-            >
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex flex-col"
+          >
+            {/* Menu Header */}
+            <div className="h-[80px] px-6 flex items-center justify-between border-b border-white/10">
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-400">
+                Joshy’s <span className="text-white font-black">ECM</span> // Menu
+              </div>
               <button 
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="absolute top-8 right-8 text-white/50 hover:text-white"
+                className="text-neutral-400 hover:text-white transition-colors p-2"
+                aria-label="Close menu"
               >
-                <X size={24} />
+                <X size={20} />
               </button>
-              
-              <div className="flex flex-col gap-8">
-                {[
-                  { name: 'Home', href: '#' },
-                  { name: 'Services', href: '#services' },
-                  { name: 'Specialization', href: '#specialization' },
-                  { name: 'Contact', href: '#footer' }
-                ].map((item) => (
-                  <a 
-                    key={item.name}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-2xl font-black uppercase tracking-widest text-white/40 hover:text-white transition-colors"
-                  >
-                    {item.name}
-                  </a>
-                ))}
+            </div>
+
+            {/* Menu Body */}
+            <div className="flex-1 px-8 py-12 flex flex-col justify-center relative overflow-hidden">
+              {/* Background Accent */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20vh] font-black text-white/[0.02] uppercase pointer-events-none select-none">
+                Technical
               </div>
 
-              <div className="mt-auto space-y-8">
-                <div className="h-px bg-white/10" />
-                <div className="space-y-4">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500">Fast Connect</div>
-                  <a 
-                    href={`tel:${CONTACT_PHONE.replace(/\s/g, '')}`}
-                    className="flex items-center gap-4 text-white text-lg font-bold"
+              <div className="flex flex-col gap-8 relative z-10">
+                {[
+                  { name: 'Home', href: '#', detail: 'Main Terminal' },
+                  { name: 'Services', href: '#services', detail: 'Diagnostics & Repair' },
+                  { name: 'Specialization', href: '#specialization', detail: 'Core Competency' },
+                  { name: 'Contact', href: '#footer', detail: 'Direct Support' }
+                ].map((item, i) => (
+                  <motion.a 
+                    key={item.name}
+                    href={item.href}
+                    initial={{ opacity: 0, x: -30, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                    transition={{ 
+                      delay: 0.1 + i * 0.1,
+                      duration: 0.8,
+                      ease: [0.16, 1, 0.3, 1]
+                    }}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="group"
                   >
-                    <Phone size={18} className="text-neutral-500" />
+                    <div className="flex items-baseline gap-4">
+                      <span className="font-mono text-[10px] text-neutral-600 group-hover:text-white transition-colors duration-500">
+                        0{i + 1}
+                      </span>
+                      <div className="flex flex-col">
+                        <span className="text-4xl sm:text-5xl font-black uppercase tracking-tighter text-white/40 group-hover:text-white transition-all duration-500 group-hover:translate-x-2">
+                          {item.name}
+                        </span>
+                        <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-600 group-hover:text-neutral-400 mt-1 transition-colors duration-500">
+                          {item.detail}
+                        </span>
+                      </div>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            {/* Menu Footer */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="p-8 border-t border-white/10 bg-white/[0.02]"
+            >
+              <div className="grid grid-cols-2 gap-8">
+                <div>
+                  <div className="text-[10px] text-neutral-500 uppercase tracking-widest mb-3 font-mono">Status</div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)] animate-pulse" />
+                    <span className="text-[10px] text-white uppercase tracking-wider font-bold tracking-[0.1em]">Systems Online</span>
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10px] text-neutral-500 uppercase tracking-widest mb-3 font-mono">Emergency</div>
+                  <a href={`tel:${CONTACT_PHONE.replace(/\s/g, '')}`} className="text-xs text-white font-bold hover:text-neutral-300 transition-colors tracking-tight">
                     {CONTACT_PHONE}
                   </a>
                 </div>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
@@ -350,13 +405,10 @@ export default function App() {
         {/* Navigation bar code... */}
         <nav className="h-[80px] md:h-[100px] flex items-center justify-between border-b border-white/10 shrink-0 relative z-50">
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="lg:hidden text-neutral-400 hover:text-white transition-colors p-2 -ml-2"
-              aria-label="Open menu"
-            >
-              <Menu size={20} />
-            </button>
+            <HamburgerButton 
+              isOpen={isMobileMenuOpen} 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+            />
             <div className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] md:tracking-[0.3em] text-neutral-400">
               Joshy’s <span className="text-white font-bold">ECM</span> // <span className="hidden sm:inline">Technical Division</span>
             </div>
@@ -770,18 +822,19 @@ export default function App() {
                   ))}
                 </div>
 
-                <div className="flex gap-6">
+                <div className="flex flex-col sm:flex-row gap-6">
                   <a 
                     href={`tel:${CONTACT_PHONE.replace(/\s/g, '')}`}
-                    className="btn-premium bg-white text-black px-10 py-4 font-bold uppercase text-[11px] tracking-[0.3em] hover:bg-neutral-200 transition-all flex items-center gap-3"
+                    className="btn-premium border border-white/30 backdrop-blur-md px-10 py-6 font-bold uppercase text-[11px] tracking-[0.3em] hover:bg-white/10 transition-all flex items-center justify-center gap-3 w-full sm:w-auto"
                   >
+                    <Phone size={14} />
                     Call Now
                   </a>
                   <a 
                     href="https://share.google/spZ1xI7duA9JHAUHM" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="btn-premium border border-white/20 px-10 py-4 font-bold uppercase text-[11px] tracking-[0.3em] hover:bg-white/10 transition-all text-center inline-block"
+                    className="btn-premium border border-white/20 px-10 py-6 font-bold uppercase text-[11px] tracking-[0.3em] hover:bg-white/10 transition-all text-center inline-block w-full sm:w-auto"
                   >
                     Get Directions
                   </a>
