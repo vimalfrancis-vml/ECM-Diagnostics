@@ -435,9 +435,14 @@ export default function App() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className="font-mono text-[9px] md:text-[10px] uppercase font-bold tracking-[0.4em] md:tracking-[0.5em] text-neutral-500 mb-4 md:mb-8 backdrop-blur-sm inline-block px-3 md:px-4 py-1.5 border border-white/10 bg-white/5 rounded-full antialiased"
+                className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4 mb-4 md:mb-8"
               >
-                Professional Diagnostics & Repair
+                <div className="font-mono text-[9px] md:text-[10px] uppercase font-bold tracking-[0.4em] md:tracking-[0.5em] text-neutral-500 backdrop-blur-sm inline-block px-3 md:px-4 py-1.5 border border-white/10 bg-white/5 rounded-full antialiased">
+                  Professional Diagnostics & Repair
+                </div>
+                <div className="font-mono text-[9px] md:text-[10px] uppercase font-bold tracking-[0.4em] md:tracking-[0.5em] text-white backdrop-blur-sm inline-block px-3 md:px-4 py-1.5 border border-white/20 bg-white/10 rounded-full antialiased shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                  10+ Years Expertise
+                </div>
               </motion.div>
               
               <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-[100px] font-black leading-[0.95] md:leading-[0.9] tracking-tighter uppercase flex flex-col items-center gap-2 md:gap-4 font-display">
@@ -688,7 +693,7 @@ export default function App() {
               {[
                 { value: '2500+', label: 'Cars Diagnosed' },
                 { value: '2200+', label: 'Happy Customers' },
-                { value: '15+', label: 'Years of Experience' },
+                { value: '10+', label: 'Years of Experience' },
                 { value: '800+', label: 'Luxury Vehicles Serviced' }
               ].map((stat, idx) => (
                 <motion.div
@@ -825,7 +830,7 @@ export default function App() {
                 <div className="flex flex-col sm:flex-row gap-6">
                   <a 
                     href={`tel:${CONTACT_PHONE.replace(/\s/g, '')}`}
-                    className="btn-premium border border-white/30 backdrop-blur-md px-10 py-6 font-bold uppercase text-[11px] tracking-[0.3em] hover:bg-white/10 transition-all flex items-center justify-center gap-3 w-full sm:w-auto"
+                    className="btn-premium border border-white/30 backdrop-blur-md px-10 py-5 md:py-6 font-bold uppercase text-[11px] md:text-[12px] tracking-[0.2em] md:tracking-[0.3em] hover:bg-white/10 transition-all flex items-center justify-center gap-3 w-full sm:w-auto shadow-[0_0_30px_rgba(255,255,255,0.1)]"
                   >
                     <Phone size={14} />
                     Call Now
@@ -834,7 +839,7 @@ export default function App() {
                     href="https://share.google/spZ1xI7duA9JHAUHM" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="btn-premium border border-white/20 px-10 py-6 font-bold uppercase text-[11px] tracking-[0.3em] hover:bg-white/10 transition-all text-center inline-block w-full sm:w-auto"
+                    className="btn-premium border border-white/20 px-10 py-5 md:py-6 font-bold uppercase text-[11px] md:text-[12px] tracking-[0.2em] md:tracking-[0.3em] hover:bg-white/10 transition-all text-center inline-block w-full sm:w-auto"
                   >
                     Get Directions
                   </a>
@@ -847,7 +852,7 @@ export default function App() {
                     <iframe 
                       width="100%" 
                       height="100%" 
-                      style={{ border: 0, filter: 'grayscale(0.6) invert(0.9) contrast(1.2)' }} 
+                      style={{ border: 0, filter: 'grayscale(1) invert(1) hue-rotate(180deg)' }} 
                       loading="lazy" 
                       allowFullScreen 
                       referrerPolicy="no-referrer-when-downgrade"
@@ -889,14 +894,14 @@ export default function App() {
             <div className="flex flex-wrap items-center justify-center gap-6">
               <button 
                 onClick={() => setIsBookingOpen(true)}
-                className="bg-white text-black px-12 py-6 font-bold uppercase text-[12px] tracking-[0.3em] hover:bg-neutral-200 transition-all flex items-center gap-3 shadow-[0_0_40px_rgba(255,255,255,0.3)]"
+                className="btn-premium bg-white text-black px-12 py-5 md:py-6 font-bold uppercase text-[11px] md:text-[12px] tracking-[0.2em] md:tracking-[0.3em] hover:bg-neutral-200 transition-all flex items-center justify-center gap-3 shadow-[0_0_40px_rgba(255,255,255,0.2)] w-full sm:w-auto"
               >
                 <Calendar size={14} />
                 Book Service
               </button>
               <a 
                 href={`tel:${CONTACT_PHONE.replace(/\s/g, '')}`}
-                className="border border-white/30 backdrop-blur-md px-12 py-6 font-bold uppercase text-[12px] tracking-[0.3em] hover:bg-white/10 transition-all flex items-center gap-3"
+                className="btn-premium border border-white/30 backdrop-blur-md px-12 py-5 md:py-6 font-bold uppercase text-[11px] md:text-[12px] tracking-[0.2em] md:tracking-[0.3em] hover:bg-white/10 transition-all flex items-center justify-center gap-3 w-full sm:w-auto shadow-[0_0_30px_rgba(255,255,255,0.1)]"
               >
                 <Phone size={14} />
                 Call Now
@@ -928,10 +933,28 @@ export default function App() {
             </div>
 
             <div className="text-[9px] uppercase tracking-[0.3em] text-neutral-600">
-              © 2024 TECHNICAL SERVICE DIVISION // ALL RIGHTS RESERVED
+              © 2026 TECHNICAL SERVICE DIVISION // ALL RIGHTS RESERVED
             </div>
           </div>
         </footer>
+
+        {/* Floating WhatsApp Button */}
+        <motion.a
+          href={`https://wa.me/${WHATSAPP_NUMBER}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, scale: 0.5, y: 50 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[80] bg-[#25D366] text-white p-4 rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.4)] flex items-center justify-center group"
+          aria-label="Contact on WhatsApp"
+        >
+          <MessageSquare size={24} fill="currentColor" />
+          <span className="max-w-0 overflow-hidden group-hover:max-w-[120px] transition-all duration-500 ease-in-out whitespace-nowrap font-bold uppercase text-[10px] tracking-widest ml-0 group-hover:ml-3">
+            WhatsApp
+          </span>
+        </motion.a>
       </div>
     </div>
   );
