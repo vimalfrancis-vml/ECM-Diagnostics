@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import {defineConfig} from 'vite';
 
 export default defineConfig({
-  base: '/ECM-Diagnostics/',
+  base: '/',
   plugins: [react(), tailwindcss()],
   server: {
     // HMR is disabled in AI Studio via DISABLE_HMR env var.
